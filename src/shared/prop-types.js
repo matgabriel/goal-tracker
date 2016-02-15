@@ -13,6 +13,7 @@ import {
   node,
   objectOf,
   oneOf,
+  oneOfType,
   shape,
   string,
 } from 'prop-types'
@@ -24,6 +25,7 @@ export {
   func,
   node,
   nonNegativeInteger,
+  oneOfType,
   shape,
   string,
 }
