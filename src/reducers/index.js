@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux'
 
+import closeDay from './closeDay'
 import currentUser from './currentUser'
 import goals from './goals'
 import history from './history'
