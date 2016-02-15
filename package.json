@@ -1,0 +1,254 @@
+{
+  "name": "goal-tracker",
+  "version": "3.1.0",
+  "private": true,
+  "description": "Demo app used in Delicious Insights’ Modern Web Apps training course",
+  "scripts": {
+    "build": "cross-env NODE_ENV=production webpack --progress --config webpack/webpack.config.js",
+    "deploy": "netlify deploy --prod",
+    "doc": "rimraf doc && npx groc",
+    "lint": "eslint .",
+    "postinstall": "rimraf node_modules/jest-runtime/node_modules/babel-core node_modules/jest-config/node_modules/babel-core",
+    "start": "webpack-dev-server --config webpack/webpack.config.js",
+    "start:all": "npm-run-all --parallel --print-label start start:api",
+    "start:api": "node tools/dev-server.js",
+    "start:poll": "cross-env POLL=true npm start",
+    "test": "cross-env NODE_ENV=test jest --json --outputFile=jest/test-results-for-storybook.json",
+    "test:cov": "npm test -- --coverage",
+    "test:watch": "npm test -- --watch",
+    "storybook": "cross-env NODE_ENV=storybook start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "corejs": 3,
+          "targets": {
+            "browsers": [
+              "last 2 versions",
+              "> 1%",
+              "safari >= 10"
+            ],
+            "node": "current"
+          },
+          "useBuiltIns": "usage"
+        }
+      ],
+      "@babel/preset-react"
+    ],
+    "plugins": [
+      "@babel/plugin-syntax-dynamic-import",
+      "@babel/plugin-syntax-import-meta",
+      [
+        "@babel/plugin-proposal-class-properties",
+        {
+          "loose": true
+        }
+      ],
+      "@babel/plugin-proposal-json-strings"
+    ],
+    "env": {
+      "development": {
+        "plugins": [
+          "react-hot-loader/babel"
+        ]
+      }
+    }
+  },
+  "eslintConfig": {
+    "extends": [
+      "standard",
+      "prettier",
+      "plugin:react/recommended",
+      "plugin:jsx-a11y/recommended",
+      "plugin:import/errors"
+    ],
+    "plugins": [
+      "prettier",
+      "react",
+      "jsx-a11y",
+      "import",
+      "react-hooks"
+    ],
+    "parser": "babel-eslint",
+    "rules": {
+      "no-irregular-whitespace": 0,
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn"
+    },
+    "settings": {
+      "react": {
+        "version": "16.5.0"
+      }
+    },
+    "env": {
+      "browser": true,
+      "commonjs": true,
+      "es6": true,
+      "jest": true,
+      "node": true
+    }
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "jsxSingleQuote": true,
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/**/*.stories.js"
+    ],
+    "moduleNameMapper": {
+      ".*\\.styl$": "<rootDir>/jest/dummy.js"
+    },
+    "notify": true,
+    "roots": [
+      "<rootDir>/src/"
+    ],
+    "watchPlugins": [
+      "jest-watch-typeahead/filename",
+      "jest-watch-typeahead/testname",
+      [
+        "jest-watch-toggle-config",
+        {
+          "setting": "verbose"
+        }
+      ],
+      [
+        "jest-watch-toggle-config",
+        {
+          "setting": "collectCoverage"
+        }
+      ]
+    ]
+  },
+  "deliciousImportSort": {
+    "customGroups": "@material-ui",
+    "mainOrder": [
+      "absolute",
+      "relative",
+      "bare"
+    ]
+  },
+  "importSort": {
+    ".js": {
+      "style": "delicious"
+    }
+  },
+  "keywords": [
+    "node",
+    "nodejs",
+    "training",
+    "goals",
+    "tracker",
+    "demo"
+  ],
+  "author": "Christophe Porteneuve <christophe@delicious-insights.com>",
+  "license": "No-License (see LICENSE file)",
+  "dependencies": {
+    "@material-ui/core": "^4.8.2",
+    "@material-ui/icons": "^4.5.1",
+    "@redux-offline/redux-offline": "^2.5.2",
+    "airbnb-prop-types": "^2.15.0",
+    "bson-objectid": "^1.3.0",
+    "date-fns": "^2.8.1",
+    "localforage": "^1.7.3",
+    "prop-types": "^15.7.2",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-redux": "^7.1.3",
+    "react-router-dom": "^5.1.2",
+    "reduce-reducers": "^1.0.4",
+    "redux": "^4.0.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.6.0",
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
+    "@babel/plugin-proposal-json-strings": "^7.7.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.7.4",
+    "@babel/plugin-syntax-import-meta": "^7.7.4",
+    "@babel/polyfill": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
+    "@babel/preset-react": "^7.7.4",
+    "@babel/register": "^7.6.0",
+    "@hot-loader/react-dom": "^16.11.0",
+    "@storybook/addon-actions": "^5.2.1",
+    "@storybook/addon-info": "^5.2.1",
+    "@storybook/addon-jest": "^5.2.1",
+    "@storybook/addon-knobs": "^5.2.1",
+    "@storybook/addon-links": "^5.2.1",
+    "@storybook/addon-options": "^5.2.1",
+    "@storybook/addon-viewport": "^5.2.1",
+    "@storybook/addons": "^5.2.1",
+    "@storybook/react": "^5.2.1",
+    "@storybook/theming": "^5.2.1",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.4.0",
+    "babel-eslint": "^10.0.3",
+    "babel-jest": "^24.9.0",
+    "babel-loader": "^8.0.6",
+    "body-parser": "^1.19.0",
+    "chalk": "^3.0.0",
+    "clean-webpack-plugin": "^3.0.0",
+    "copy-webpack-plugin": "^5.0.4",
+    "core-js": "^3.6.1",
+    "cross-env": "^6.0.3",
+    "css-loader": "^3.4.1",
+    "dirty-chai": "^2.0.0",
+    "error-overlay-webpack-plugin": "^0.4.1",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-loader": "^3.0.3",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^2.3.0",
+    "eslint-plugin-standard": "^4.0.1",
+    "express": "^4.17.1",
+    "file-loader": "^5.0.2",
+    "friendly-errors-webpack-plugin": "^1.7.0",
+    "hard-source-webpack-plugin": "^0.13.1",
+    "html-webpack-plugin": "^3.2.0",
+    "image-webpack-loader": "^6.0.0",
+    "import-sort-cli": "^6.0.0",
+    "import-sort-parser-babylon": "^6.0.0",
+    "import-sort-style-delicious": "^1.0.2",
+    "jest": "^24.9.0",
+    "jest-watch-toggle-config": "^1.0.2",
+    "jest-watch-typeahead": "^0.4.2",
+    "mini-css-extract-plugin": "^0.9.0",
+    "morgan": "^1.9.0",
+    "netlify-cli": "^2.15.0",
+    "node-notifier": "^6.0.0",
+    "npm-run-all": "^4.1.5",
+    "offline-plugin": "^5.0.7",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "postcss-cssnext": "^3.1.0",
+    "postcss-loader": "^3.0.0",
+    "prettier": "^1.18.2",
+    "react-hot-loader": "^4.12.13",
+    "react-test-renderer": "^16.9.0",
+    "rimraf": "^3.0.0",
+    "style-loader": "^1.1.2",
+    "stylus": "^0.54.7",
+    "stylus-loader": "^3.0.2",
+    "svg-url-loader": "^3.0.3",
+    "terser-webpack-plugin": "^2.3.1",
+    "url-loader": "^3.0.0",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-middleware": "^3.7.1",
+    "webpack-dev-server": "^3.8.1",
+    "webpack-hot-middleware": "^2.25.0",
+    "webpack-merge": "^4.2.2"
+  }
+}

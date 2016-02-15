@@ -1,0 +1,30 @@
+{
+  // Utilisez IntelliSense pour en savoir plus sur les attributs possibles.
+  // Pointez pour afficher la description des attributs existants.
+  // Pour plus d'informations, visitez : https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Lancer Chrome sur l’appli",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceRoot}",
+      "sourceMapPathOverrides": {
+        "webpack:///*": "${webRoot}/*",
+        "webpack:///./*": "${webRoot}/*",
+        "webpack:///./~/*": "${webRoot}/node_modules/*"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Déboguer les tests",
+      "program": "${workspaceFolder}/node_modules/.bin/jest",
+      // (Si les points d’arrêt refusent de se déclencher, rajouter
+      // l’argument `"--runInBand"`).
+      "args": ["--watch"],
+      "console": "integratedTerminal"
+    }
+  ]
+}
