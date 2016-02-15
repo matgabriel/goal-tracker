@@ -1,5 +1,5 @@
 import { hot } from 'react-hot-loader/root'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import ArrowForward from '@material-ui/icons/ArrowForward'
@@ -17,6 +17,10 @@ import TogglablePasswordField from './TogglablePasswordField'
 import './LoginScreen.styl'
 
 const LoginScreen = () => {
+  useEffect(() => {
+    document.title = 'Identifiez-vous'
+  }, [])
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 

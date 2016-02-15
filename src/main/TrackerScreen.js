@@ -1,6 +1,6 @@
 import { hot } from 'react-hot-loader/root'
 import { Link } from 'react-router-dom'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Button from '@material-ui/core/Button'
@@ -19,6 +19,10 @@ import { progressOnGoal } from '../reducers/todaysProgress'
 import './TrackerScreen.styl'
 
 const TrackerScreen = () => {
+  useEffect(() => {
+    document.title = 'Mes objectifs du jour'
+  }, [])
+
   const { goals, today, todaysProgress } = useSelector(selectState)
   const dispatch = useDispatch()
 
