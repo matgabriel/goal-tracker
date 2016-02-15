@@ -1,14 +1,17 @@
 import { hot } from 'react-hot-loader/root'
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 import LoginScreen from '../auth/LoginScreen'
-import store from '../store'
 import TrackerScreen from './TrackerScreen'
 
 const HomeScreen = () => {
-  const loggedIn = store.currentUser.loginState === 'logged-in'
+  const loggedIn = useSelector(selectLoggedIn)
 
   return loggedIn ? <TrackerScreen /> : <LoginScreen />
 }
+
+const selectLoggedIn = ({ currentUser: { loginState } }) =>
+  loginState === 'logged-in'
 
 export default hot(HomeScreen)
