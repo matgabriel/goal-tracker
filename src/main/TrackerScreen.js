@@ -1,4 +1,5 @@
 import { hot } from 'react-hot-loader/root'
+import { Link } from 'react-router-dom'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -38,10 +39,15 @@ const TrackerScreen = () => {
         ))}
       </CardContent>
       <CardActions>
-        <Button color='secondary' variant='contained'>
+        <Button
+          color='secondary'
+          component={Link}
+          to='/history'
+          variant='contained'
+        >
           <HistoryIcon /> Historique
         </Button>
-        <Button variant='contained'>
+        <Button component={Link} to='/settings' variant='contained'>
           <SettingsIcon /> Paramètres
         </Button>
       </CardActions>

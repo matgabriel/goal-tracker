@@ -1,6 +1,7 @@
 import { number } from '@storybook/addon-knobs'
 import { Provider } from 'react-redux'
 import React from 'react'
+import { MemoryRouter as Router } from 'react-router-dom'
 import { storiesOf } from '@storybook/react'
 
 import { isoDate } from '../../.storybook/helpers'
@@ -37,6 +38,7 @@ const goals = [
 const today = new Date().toISOString().split('T')[0]
 
 storiesOf('Main/TrackerScreen', module)
+  .addDecorator((story) => <Router>{story()}</Router>)
   .add('Regular', () => (
     <WrappedTrackerScreen goals={goals} today={today} todaysProgress={{}} />
   ))
