@@ -3,6 +3,9 @@ import React from 'react'
 
 import LoginScreen from '../auth/LoginScreen'
 
-const HomeScreen = () => <LoginScreen />
+const HomeScreen = () => {
+  // Vos modifs ici
+  return <LoginScreen />
+}
 
 export default hot(HomeScreen)
