@@ -1,3 +1,6 @@
+// Suivi du jour pour un objectif
+// ==============================
+
 import { hot } from 'react-hot-loader/root'
 import React from 'react'
 
@@ -9,12 +12,17 @@ import Typography from '@material-ui/core/Typography'
 import { func, GoalPropType, nonNegativeInteger } from '../shared/prop-types'
 import Gauge from '../shared/Gauge'
 
+// Section de l'écran principal, dédiée à un objectif.  Fournit notamment le
+// descriptif de l'objectif et l’éventuel bouton de progression.
+
 const GoalTrackerWidget = ({
+  // La déstructuration en force !
   goal,
   goal: { name, units, target },
   onProgress,
   progress,
 }) => {
+  // La beauté d'un ternaire multi-lignes…
   const adderComponent =
     target > progress ? (
       <Fab

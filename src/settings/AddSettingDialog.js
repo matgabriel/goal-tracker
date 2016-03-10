@@ -42,12 +42,12 @@ const DEFAULT_STATE = {
 
 const AddSettingDialog = ({ goal, onAdd, onCancel, open }) => {
   const [state, setState] = useState(DEFAULT_STATE)
-  const [prevGoalId, setPrevGoalId] = useState(undefined)
 
   // On gère justement ici le cas où notre prop `goal` change au fil du temps,
   // ce qui exige alors une resynchro de l’état, et partant un nouveau rendu.
   // Si nous étions basés sur une classe, on utiliserait sans doute `static
   // getDerivedStateFromProps()` pour ça.
+  const [prevGoalId, setPrevGoalId] = useState(undefined)
   if (prevGoalId !== goal.id) {
     setState({ ...DEFAULT_STATE, ...goal, keepOpen: goal.id === undefined })
     setPrevGoalId(goal.id)
@@ -140,7 +140,7 @@ const AddSettingDialog = ({ goal, onAdd, onCancel, open }) => {
   // - Une sélection dynamique de fonction (`Number` ou `String`)
   // - Une propriété dynamique/calculée (`[field]`)
   // - Un spread d’objet (`...state`), la fonction renvoyée par le hook
-  //   `useState` n’étant pas différentielke, contrairement au `setState` de
+  //   `useState` n’étant pas différentielle, contrairement au `setState` de
   //   `React.Component`.
   function handleChange(event, field, checked) {
     if (field === 'keepOpen') {
@@ -158,8 +158,8 @@ const AddSettingDialog = ({ goal, onAdd, onCancel, open }) => {
     setState(DEFAULT_STATE)
   }
 }
-// Comme pour tous les composants “bêtes”, la bonne pratique consiste à
-// expliciter les propriétés autorisées.
+// Comme pour tous les composants, la bonne pratique consiste à expliciter les
+// propriétés autorisées.
 AddSettingDialog.propTypes = {
   goal: oneOfType([GoalPropType, shape({})]),
   onAdd: func.isRequired,

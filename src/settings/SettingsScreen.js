@@ -1,3 +1,6 @@
+// Paramètres
+// ==========
+
 import { hot } from 'react-hot-loader/root'
 import { Link } from 'react-router-dom'
 import React, { useEffect, useState } from 'react'
@@ -28,16 +31,37 @@ import { logOut } from '../reducers/currentUser'
 const DEFAULT_STATE = { goal: {}, dialog: null }
 
 const SettingsScreen = () => {
+  // Au premier rendu, on ajuste le titre du document pour permettre un
+  // historique de navigation utilisable (et pas une tonne de titres
+  // identiques).  Le [deuxième
+  // argument](https://fr.reactjs.org/docs/hooks-reference.html#conditionally-firing-an-effect)
+  // est le tableau de dépendances qui indique quand relancer l’effet : comme il
+  // est vide, seul le premier rendu du composant est concerné.
   useEffect(() => {
     document.title = 'Mes paramètres'
   }, [])
 
   const [{ goal, dialog }, setState] = useState(DEFAULT_STATE)
 
+  // On s’intéresse uniquement aux champs `goals` et `currentUser.email` de
+  // l’état global, qu’on veut retrouver dans nos propriétés sous les mêmes
+  // noms.  Par ricochet, seuls les changements apportés à ces champs
+  // entraîneront un éventuel *re-render* de notre conteneur.  La fonction
+  // `selectState`, qui va chercher ces infos, est plus bas dans le fichier.
   const { goals, email } = useSelector(selectState)
+  // Vu qu’on va solliciter le *store* pour déclencher la déconnexion ou
+  // manipuler les objectifs, on a besoin de `dispatch` afin de lui envoyer une
+  // action.
   const dispatch = useDispatch()
 
   return (
+    // Quand on fait un bouton destiné à être en fait un lien, surtout au sein
+    // d’un [`<Link>`](https://reacttraining.com/react-router/web/api/Link), on
+    // utilise la propriété
+    // [`component`](https://material-ui.com/api/button/#props) pour altérer le
+    // composant représentant la couche extérieure du bouton (en lieu et place
+    // de `button`).  Les *props* non utilisées par `Button` sont alors passées
+    // telles quelles à ce composant (ici la *prop* `to`).
     <>
       <Button component={Link} to='/' variant='text'>
         <ArrowBack />
@@ -133,6 +157,21 @@ const SettingsScreen = () => {
   }
 }
 
+// Fonction de sélection des valeurs utiles au composant au sein de l’état
+// global applicatif géré par Redux.  L’argument est l’état global applicatif
+// dans son intégralité, la valeur de retour sera celle renvoyée par le
+// [`useSelector()`](https://react-redux.js.org/api/hooks#useselector) auquel on
+// aura passé cette fonction.
+//
+// Ici, on renvoie un sous-ensemble de l’état global, sans altérer les valeurs
+// des propriétés retenues (comme un
+// [`_.pick()`](https://lodash.com/docs/#pick)), donc on renvoie un littéral
+// objet avec ces propriétés-là.  Attention à la syntaxe : à gauche de la
+// flèche, on a la signature de la fonction, qui déstructure son argument objet
+// pour y prendre deux propriétés ; à droite de la flèche, on a un littéral
+// objet, qu’on a dû enrober par des parenthèses pour que les accolades, étant
+// ainsi forcées d’être une expression et non un bloc de fonction, représentent
+// bien un littéral objet.
 const selectState = ({ goals, currentUser: { email } }) => ({ goals, email })
 
 export default hot(SettingsScreen)

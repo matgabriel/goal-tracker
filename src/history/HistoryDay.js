@@ -1,6 +1,6 @@
 // Journée d’historique
 // ====================
-
+//
 // Section de l'écran d’historique, dédiée à un jour précis.
 
 import React from 'react'

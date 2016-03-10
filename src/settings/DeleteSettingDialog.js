@@ -46,13 +46,8 @@ const DeleteSettingDialog = ({ goal = {}, onCancel, onDelete, open }) => (
   </Dialog>
 )
 
-// Sur un composant “bête”, préciser les propriétés attendues / autorisées est
-// [une bonne pratique
-// incontournable](http://facebook.github.io/react/docs/reusable-components.html).
-// Quand on n’est pas dans une classe ES6 (et en effet, les composants purs
-// fonctionnels sont le cas majoritaire), on colle juste la propriété
-// `propTypes` directement sur la fonction (ça rend exactement pareil qu'une
-// propriété `static` dans une classe ES6).
+// Comme pour tous les composants, la bonne pratique consiste à expliciter les
+// propriétés autorisées.
 DeleteSettingDialog.propTypes = {
   goal: oneOfType([GoalPropType, shape({})]),
   onCancel: func.isRequired,
