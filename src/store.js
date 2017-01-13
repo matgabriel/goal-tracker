@@ -1,4 +1,7 @@
-import { createStore } from 'redux'
+import { compose, createStore } from 'redux'
+import localForage from 'localforage'
+import { offline } from '@redux-offline/redux-offline'
+import offlineConfig from '@redux-offline/redux-offline/lib/defaults'
 import { subDays } from 'date-fns'
 
 import goalTrackerReducer from './reducers'
@@ -62,13 +65,25 @@ const DEFAULT_STATE = {
   ],
 }
 
+const reduxOfflineConfig = {
+  ...offlineConfig,
+  persistOptions: {
+    storage: localForage,
+  },
+}
+
 const devToolsEnhancer =
   typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__
     ? window.__REDUX_DEVTOOLS_EXTENSION__()
     : (x) => x
 
 export function makeStore(initialState = DEFAULT_STATE) {
-  const enhancer = devToolsEnhancer
+  const nodeEnv = process.env.NODE_ENV
+  const shouldPersist = nodeEnv !== 'test' && nodeEnv !== 'storybook'
+
+  const enhancer = shouldPersist
+    ? compose(offline(reduxOfflineConfig), devToolsEnhancer)
+    : devToolsEnhancer
 
   const store = createStore(goalTrackerReducer, initialState, enhancer)
 

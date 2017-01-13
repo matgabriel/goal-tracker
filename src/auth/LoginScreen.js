@@ -1,6 +1,6 @@
 import { hot } from 'react-hot-loader/root'
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import ArrowForward from '@material-ui/icons/ArrowForward'
 import Button from '@material-ui/core/Button'
@@ -8,6 +8,7 @@ import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
+import Snackbar from '@material-ui/core/Snackbar'
 import TextField from '@material-ui/core/TextField'
 
 import { logIn } from '../reducers/currentUser'
@@ -19,7 +20,19 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
+  const loginState = useSelector(selectLoginState)
   const dispatch = useDispatch()
+
+  const loggingIn = loginState === 'pending'
+  const logInIcon = loggingIn ? null : <ArrowForward />
+  const canLogIn = !loggingIn && email && password
+
+  const snackBar =
+    loginState === 'failure' ? (
+      <Snackbar message='Identifiant ou mot de passe invalide' open />
+    ) : (
+      ''
+    )
 
   return (
     <form onSubmit={login}>
@@ -51,12 +64,18 @@ const LoginScreen = () => {
           />
         </CardContent>
         <CardActions style={{ display: 'flex', justifyContent: 'center' }}>
-          <Button color='primary' type='submit' variant='contained'>
-            <ArrowForward />
+          <Button
+            color='primary'
+            disabled={!canLogIn}
+            type='submit'
+            variant='contained'
+          >
+            {logInIcon}
             Connecte-toi
           </Button>
         </CardActions>
       </Card>
+      {snackBar}
     </form>
   )
 
@@ -65,5 +84,7 @@ const LoginScreen = () => {
     dispatch(logIn(email, password))
   }
 }
+
+const selectLoginState = ({ currentUser: { loginState } }) => loginState
 
 export default hot(LoginScreen)
