@@ -1,6 +1,6 @@
 import { hot } from 'react-hot-loader/root'
 import { Link } from 'react-router-dom'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Add from '@material-ui/icons/Add'
@@ -19,15 +19,19 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Logout from '@material-ui/icons/ExitToApp'
 import Typography from '@material-ui/core/Typography'
 
-// import { removeGoal } from '../reducers/goals'
-// import DeleteSettingDialog from './DeleteSettingDialog'
+import { removeGoal } from '../reducers/goals'
+import DeleteSettingDialog from './DeleteSettingDialog'
 import GoalSetting from './GoalSetting'
 import { logOut } from '../reducers/currentUser'
+
+const DEFAULT_STATE = { goal: {}, dialog: null }
 
 const SettingsScreen = () => {
   useEffect(() => {
     document.title = 'Mes paramètres'
   }, [])
+
+  const [{ goal, dialog }, setState] = useState(DEFAULT_STATE)
 
   const { goals, email } = useSelector(selectState)
   const dispatch = useDispatch()
@@ -58,7 +62,11 @@ const SettingsScreen = () => {
           <List>
             <Typography variant='subtitle1'>Mes objectifs</Typography>
             {goals.map((goal) => (
-              <GoalSetting goal={goal} key={goal.id} />
+              <GoalSetting
+                goal={goal}
+                key={goal.id}
+                onDeleteClick={openGoalDeleter}
+              />
             ))}
             {goals.length === 0 && (
               <ListItem>
@@ -74,8 +82,27 @@ const SettingsScreen = () => {
           </Button>
         </CardActions>
       </Card>
+      <DeleteSettingDialog
+        goal={goal}
+        onCancel={closeDialogs}
+        onDelete={deleteSelectedGoal}
+        open={dialog === 'delete'}
+      />
     </>
   )
+
+  function closeDialogs() {
+    setState(DEFAULT_STATE)
+  }
+
+  function deleteSelectedGoal() {
+    dispatch(removeGoal(goal.id))
+    closeDialogs()
+  }
+
+  function openGoalDeleter(goal) {
+    setState({ goal, dialog: 'delete' })
+  }
 }
 
 const selectState = ({ goals, currentUser: { email } }) => ({ goals, email })
