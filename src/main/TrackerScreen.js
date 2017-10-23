@@ -1,5 +1,6 @@
 import { hot } from 'react-hot-loader/root'
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
@@ -12,12 +13,12 @@ import SettingsIcon from '@material-ui/icons/Settings'
 import { formatDate, getDayCounts } from '../lib/helpers'
 import Gauge from '../shared/Gauge'
 import GoalTrackerWidget from './GoalTrackerWidget'
-import store from '../store'
 
 import './TrackerScreen.styl'
 
 const TrackerScreen = () => {
-  const { goals, today, todaysProgress } = store
+  const { goals, today, todaysProgress } = useSelector(selectState)
+
   return (
     <Card className='goalTracker'>
       <CardHeader
@@ -50,5 +51,11 @@ const TrackerScreen = () => {
     return { value: totalProgress, max: totalTarget }
   }
 }
+
+const selectState = ({ goals, today, todaysProgress }) => ({
+  goals,
+  today,
+  todaysProgress,
+})
 
 export default hot(TrackerScreen)
