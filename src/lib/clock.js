@@ -75,5 +75,18 @@ function notify({ title, text, icon, secondsVisible = 0 }) {
     return
   }
 
-  const notif = '???' // Votre code ici en remplacement
+  const notif = new window.Notification(title, {
+    body: text,
+    icon,
+    lang: 'fr',
+    requireInteraction: secondsVisible > 0,
+    tag: 'goal-tracker',
+    vibrate: [100, 50, 100, 50, 100],
+  })
+
+  if (secondsVisible > 0 && typeof notif.close === 'function') {
+    notif.addEventListener('show', () => {
+      setTimeout(() => notif.close(), secondsVisible * 1000)
+    })
+  }
 }
