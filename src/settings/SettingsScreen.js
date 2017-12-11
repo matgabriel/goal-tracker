@@ -19,7 +19,8 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Logout from '@material-ui/icons/ExitToApp'
 import Typography from '@material-ui/core/Typography'
 
-import { removeGoal } from '../reducers/goals'
+import { addGoal, removeGoal, updateGoal } from '../reducers/goals'
+import AddSettingDialog from './AddSettingDialog'
 import DeleteSettingDialog from './DeleteSettingDialog'
 import GoalSetting from './GoalSetting'
 import { logOut } from '../reducers/currentUser'
@@ -66,6 +67,7 @@ const SettingsScreen = () => {
                 goal={goal}
                 key={goal.id}
                 onDeleteClick={openGoalDeleter}
+                onEditClick={openGoalEditor}
               />
             ))}
             {goals.length === 0 && (
@@ -76,12 +78,18 @@ const SettingsScreen = () => {
           </List>
         </CardContent>
         <CardActions>
-          <Button color='primary' variant='contained'>
+          <Button color='primary' onClick={openGoalAdder} variant='contained'>
             <Add />
             Ajouter un objectif
           </Button>
         </CardActions>
       </Card>
+      <AddSettingDialog
+        goal={goal}
+        onAdd={addOrUpdateGoal}
+        onCancel={closeDialogs}
+        open={dialog === 'add-or-update'}
+      />
       <DeleteSettingDialog
         goal={goal}
         onCancel={closeDialogs}
@@ -90,6 +98,18 @@ const SettingsScreen = () => {
       />
     </>
   )
+
+  function addOrUpdateGoal({ id, name, target, units, keepOpen }) {
+    if (id !== undefined) {
+      dispatch(updateGoal(id, name, target, units))
+      keepOpen = false
+    } else {
+      dispatch(addGoal(name, target, units))
+    }
+    if (!keepOpen) {
+      closeDialogs()
+    }
+  }
 
   function closeDialogs() {
     setState(DEFAULT_STATE)
@@ -100,8 +120,16 @@ const SettingsScreen = () => {
     closeDialogs()
   }
 
+  function openGoalAdder() {
+    setState({ goal: {}, dialog: 'add-or-update' })
+  }
+
   function openGoalDeleter(goal) {
     setState({ goal, dialog: 'delete' })
+  }
+
+  function openGoalEditor(goal) {
+    setState({ goal, dialog: 'add-or-update' })
   }
 }
 
