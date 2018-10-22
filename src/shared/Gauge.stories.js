@@ -1,10 +1,10 @@
 import { number } from '@storybook/addon-knobs'
 import React from 'react'
-import { storiesOf } from '@storybook/react'
 
 import Gauge from './Gauge'
+import { testedStoriesOf } from '../../.storybook/helpers'
 
-storiesOf('Shared/Gauge', module)
+testedStoriesOf('Shared/Gauge', module)
   .addParameters({ jest: 'Gauge' })
   .add('Empty, using defaults', () => <Gauge value={0} />)
   .add('50, using defaults', () => <Gauge value={50} />)

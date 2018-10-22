@@ -1,9 +1,9 @@
 import { action } from '@storybook/addon-actions'
 import { number, text } from '@storybook/addon-knobs'
 import React from 'react'
-import { storiesOf } from '@storybook/react'
 
 import GoalTrackerWidget from './GoalTrackerWidget'
+import { testedStoriesOf } from '../../.storybook/helpers'
 
 import './TrackerScreen.styl'
 
@@ -16,7 +16,7 @@ const goal = {
   units: 'pages de doc',
 }
 
-storiesOf('Main/GoalTrackerWidget', module)
+testedStoriesOf('Main/GoalTrackerWidget', module)
   .addParameters({ jest: 'GoalTrackerWidget' })
   .addDecorator(TSDecorator)
   .add('Incomplete', () => (
