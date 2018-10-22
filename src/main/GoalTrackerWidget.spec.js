@@ -5,17 +5,80 @@ import '@testing-library/jest-dom/extend-expect'
 import GoalTrackerWidget from './GoalTrackerWidget'
 
 describe('<GoalTrackerWidget />', () => {
+  const goal = {
+    id: '0123456789abcdef01234567',
+    name: 'My goal',
+    target: 42,
+    units: 'wombats',
+  }
+
   describe('when not completed', () => {
-    it.todo('should render appropriately')
+    it('should render appropriately', () => {
+      for (const progress of [0, 1, 21, 41]) {
+        const { getByRole, queryByTestId, queryByText } = render(
+          <GoalTrackerWidget goal={goal} progress={progress} />
+        )
+        expect(getByRole('heading')).toHaveTextContent(goal.name)
+        expect(getByRole('progressbar')).toHaveAttribute(
+          'aria-valuenow',
+          String(Math.round((progress * 100) / goal.target))
+        )
+        expect(
+          queryByText(`${progress} ${goal.units} sur ${goal.target}`)
+        ).not.toBeNull()
 
-    it.todo('should trigger its onProgress on click')
+        expect(queryByTestId('in-progress')).not.toBeNull()
 
-    it.todo('should otherwise match the expected snapshot')
+        cleanup()
+      }
+    })
+
+    it('should trigger its onProgress on click', () => {
+      const progress = 21
+      const onProgress = jest.fn()
+      const { getByRole } = render(
+        <GoalTrackerWidget
+          goal={goal}
+          onProgress={onProgress}
+          progress={progress}
+        />
+      )
+
+      fireEvent.click(getByRole('button'))
+
+      expect(onProgress).toHaveBeenCalledTimes(1)
+      expect(onProgress).toHaveBeenCalledWith(goal)
+    })
+
+    it('should otherwise match the expected snapshot', () => {
+      const { container } = render(
+        <GoalTrackerWidget goal={goal} progress={21} />
+      )
+
+      expect(container).toMatchSnapshot()
+    })
   })
 
   describe('when completed (or exceeded)', () => {
-    it.todo('should render appropriately')
+    it('should render appropriately', () => {
+      for (const progress of [goal.target, goal.target + 1, goal.target + 10]) {
+        const { queryByTestId } = render(
+          <GoalTrackerWidget goal={goal} progress={progress} />
+        )
 
-    it.todo('should otherwise match the expected snapshot')
+        expect(queryByTestId('in-progress')).toBeNull()
+        expect(queryByTestId('completed')).not.toBeNull()
+
+        cleanup()
+      }
+    })
+
+    it('should otherwise match the expected snapshot', () => {
+      const { container } = render(
+        <GoalTrackerWidget goal={goal} progress={42} />
+      )
+
+      expect(container).toMatchSnapshot()
+    })
   })
 })
