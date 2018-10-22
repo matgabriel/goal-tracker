@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography'
 import { func, GoalPropType, nonNegativeInteger } from '../shared/prop-types'
 import Gauge from '../shared/Gauge'
 
-const GoalTrackerWidget = ({ FIXME }) => {
+const GoalTrackerWidget = ({ goal: { name, units, target }, progress }) => {
   const adderComponent =
     target > progress ? (
       <Fab color='secondary' size='small'>
