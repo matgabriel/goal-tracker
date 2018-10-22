@@ -19,7 +19,8 @@ Gauge.defaultProps = {
   max: 100,
 }
 
-// Comme toujours, on définit les propriétés attendues/autorisées pour validation.
+// Comme toujours, on définit les propriétés attendues/autorisées pour
+// validation.
 Gauge.propTypes = {
   max: positiveInteger,
   value: nonNegativeInteger.isRequired,
